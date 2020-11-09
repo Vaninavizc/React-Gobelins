@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <!-- Library -->
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+        .heading {
+            color: purple;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        class Clock extends React.Component {
+
+            // constructor 1 fois au dé
+            constructor(props){
+                super(props);
+                this.state = {
+                    count : 0
+                }
+
+                console.log('1. CONSTRUCTOR');
+            }
+
+            componentDidMount(){
+                this.time = setInterval(
+                    () => {
+                        this.setState({  timer: this.state.timer + 1 })
+                    }, 1000
+                )
+
+               
+            }
+
+            componentWillUnmount(){
+                clearInterval(this.time);
+            }
+
+            render() {
+                const timer = new Date;
+                console.log('2. RENDER');
+
+                const { count } = this.state;
+                
+                return (
+                    <div className="heading" >
+                        {timer.toLocaleTimeString()}
+                    </div>
+                )
+            }
+            
+        }
+
+        class Home extends React.Component{
+            // constructor 1 fois au dé
+            constructor(props){
+                super(props);
+                this.state = {
+                    life : true
+                }
+            }
+
+            componentDidMount(){
+                setTimeout(() => {
+                    this.setState({ life : false});
+                }, 5000);
+            }
+
+            render(){
+                const { life } = this.state;
+
+                if( life === true)
+                    return(
+                        <Clock />
+                    )
+
+                return(
+                    <p>Clock is dead</p>
+                )
+
+            }
+        }
+
+        // Rendu dans le DOM
+        ReactDOM.render(
+            <Home />,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+
+</html>
